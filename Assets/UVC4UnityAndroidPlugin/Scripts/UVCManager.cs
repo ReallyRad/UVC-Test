@@ -143,6 +143,13 @@ namespace Serenegiant.UVC
 		 */
 		public class CameraInfo
 		{
+			public UVCDevice Device => device;
+
+			public UVCVideoSize[] SupportedSizes
+			{
+				get { return SupportedSize; }
+			}
+			
 			internal readonly UVCDevice device;
 			internal readonly UVCVideoSize[] SupportedSize;
 			internal Texture previewTexture;
@@ -619,9 +626,6 @@ namespace Serenegiant.UVC
 		// Start is called before the first frame update
 		IEnumerator Start()
 		{			
-			Debug.Log("beetch managre	");
-			Console.WriteLine("console bith");
-
 #if (!NDEBUG && DEBUG && ENABLE_LOG)
 			Debug.Log("beetch debug	");
 			
@@ -698,7 +702,6 @@ namespace Serenegiant.UVC
                 {
                     HandleOnDetachEvent(found);
                     StopPreview(found);
-					StopAudio(found);
 					RemoveCamera(found);
 					RemoveAudio(found);
                     attachedDevices.Remove(found);
@@ -754,7 +757,10 @@ namespace Serenegiant.UVC
 				}
 				if (!size.IsValid)
 				{	// CameraInfoからの解像度設定も無効なら対応解像度から探す
-					size = info.FindNearest(PreferH264, DefaultWidth, DefaultHeight);
+					int savedWidth = PlayerPrefs.GetInt("uvc_width", (int)DefaultWidth);
+					int savedHeight = PlayerPrefs.GetInt("uvc_height", (int)DefaultHeight);
+					size = info.FindNearest(PreferH264, (uint)savedWidth, (uint)savedHeight);
+					Debug.Log($"Using startup resolution {savedWidth}x{savedHeight}");
 				}
 				if (!size.IsValid)
 				{	// ここには来ないはずだけど念のためにチェック
