@@ -8,18 +8,15 @@ namespace Serenegiant.UVC
 {
     public class UVCToolkitPanel : MonoBehaviour
     {
-        [SerializeField]
-        private UVCManager manager;
-
-        private UIDocument document;
+        [SerializeField] private UVCManager manager;
+        [SerializeField] private UIDocument document;
         
         private Button showConsoleButton;
         private DropdownField cameraDropdown;
         private DropdownField resolutionDropdown;
         private ScrollView controlsContainer;
 
-        private List<UVCManager.CameraInfo> cameras =
-            new();
+        private List<UVCManager.CameraInfo> cameras = new();
 
         private UVCManager.CameraInfo currentCamera;
         
@@ -28,46 +25,27 @@ namespace Serenegiant.UVC
         private const string PREF_WIDTH = "uvc_width";
         private const string PREF_HEIGHT = "uvc_height";
         
+        private const ulong AUTO_EXPOSURE = 0x4;
+        private const ulong EXPOSURE = 0x8;
         void Start()
         {
-            document =
-                GetComponent<UIDocument>();
-
-            var root =
-                document.rootVisualElement;
+            var root = document.rootVisualElement;
 
             showConsoleButton = root.Q<Button>("show-console-button");
             
-            showConsoleButton.clicked += () =>
-            {
-                LunarConsole.Show();
-            };
-            
-            cameraDropdown =
-                root.Q<DropdownField>(
-                    "cameraDropdown");
-
-            resolutionDropdown =
-                root.Q<DropdownField>(
-                    "resolutionDropdown");
-
-            controlsContainer =
-                root.Q<ScrollView>(
-                    "controlsContainer");
-
-            cameraDropdown.RegisterValueChangedCallback(
-                OnCameraChanged);
-
-            resolutionDropdown.RegisterValueChangedCallback(
-                OnResolutionChanged);
+            showConsoleButton.clicked += () => LunarConsole.Show();
+            cameraDropdown = root.Q<DropdownField>("cameraDropdown");
+            resolutionDropdown = root.Q<DropdownField>("resolutionDropdown");
+            controlsContainer = root.Q<ScrollView>("controlsContainer");
+            cameraDropdown.RegisterValueChangedCallback(OnCameraChanged);
+            resolutionDropdown.RegisterValueChangedCallback(OnResolutionChanged);
 
             Refresh();
         }
 
         private void Update()
         {
-            var current =
-                manager.GetAttachedDevices();
+            var current = manager.GetAttachedDevices();
 
             if (current.Count != lastCameras.Count)
             {
@@ -78,18 +56,13 @@ namespace Serenegiant.UVC
         
         public void Refresh()
         {
-            cameras =
-                manager.GetAttachedDevices();
+            cameras = manager.GetAttachedDevices();
             
             Debug.Log($"Refresh: found {cameras.Count} cameras");
 
             cameraDropdown.choices.Clear();
 
-            foreach (var camera in cameras)
-            {
-                cameraDropdown.choices.Add(
-                    camera.DeviceName);
-            }
+            foreach (var camera in cameras) cameraDropdown.choices.Add(camera.DeviceName);
 
             if (cameras.Count > 0)
             {
@@ -98,58 +71,66 @@ namespace Serenegiant.UVC
             }
         }
 
-        void OnCameraChanged(
-            ChangeEvent<string> evt)
+        void OnCameraChanged(ChangeEvent<string> evt)
         {
-            SelectCamera(
-                cameraDropdown.index);
+            SelectCamera(cameraDropdown.index);
         }
 
         void SelectCamera(int index)
         {
-            if (index < 0 ||
-                index >= cameras.Count)
-                return;
-
-            currentCamera =
-                cameras[index];
-
+            if (index < 0 || index >= cameras.Count) return;
+            currentCamera = cameras[index];
             BuildResolutionList();
-
+            currentCamera.UpdateCtrls();
             BuildControls();
+
+            if (currentCamera != null)
+            {
+                currentCamera.SetValue(AUTO_EXPOSURE, 0);
+                try
+                {
+                    int before = currentCamera.GetValue(0x2);
+
+                    currentCamera.SetValue(0x2, 1);
+
+                    int after = currentCamera.GetValue(0x2);
+
+                    Debug.Log($"AE MODE before={before} after={after}");
+                }
+                catch(Exception e)
+                {
+                    Debug.Log($"AE MODE failed: {e}");
+                }
+                
+            }
         }
 
+        void SetLowExposure()
+        {
+            var info = currentCamera.GetInfo(EXPOSURE);
+
+            int target = Mathf.Clamp((int)info.min + 7, (int)info.min, (int)info.max);
+
+            currentCamera.SetValue(EXPOSURE, target);
+
+            Debug.Log($"Exposure forced low: {target} (min={info.min}, max={info.max})");
+        }
+        
         void BuildResolutionList()
         {
             resolutionDropdown.choices.Clear();
 
-            int savedWidth =
-                PlayerPrefs.GetInt(PREF_WIDTH, -1);
-
-            int savedHeight =
-                PlayerPrefs.GetInt(PREF_HEIGHT, -1);
-
+            int savedWidth = PlayerPrefs.GetInt(PREF_WIDTH, -1);
+            int savedHeight = PlayerPrefs.GetInt(PREF_HEIGHT, -1);
             int selectedIndex = 0;
-
-            for (int i = 0;
-                 i < currentCamera.SupportedSizes.Length;
-                 i++)
+            for (int i = 0; i < currentCamera.SupportedSizes.Length; i++)
             {
-                var size =
-                    currentCamera.SupportedSizes[i];
-
-                resolutionDropdown.choices.Add(
-                    $"{size.Width}x{size.Height}");
-
-                if (size.Width == savedWidth &&
-                    size.Height == savedHeight)
-                {
-                    selectedIndex = i;
-                }
+                var size = currentCamera.SupportedSizes[i];
+                resolutionDropdown.choices.Add($"{size.Width}x{size.Height}");
+                if (size.Width == savedWidth && size.Height == savedHeight) selectedIndex = i;
             }
 
-            resolutionDropdown.index =
-                selectedIndex;
+            resolutionDropdown.index = selectedIndex;
         }
         void OnResolutionChanged(ChangeEvent<string> evt)
         {
@@ -167,91 +148,74 @@ namespace Serenegiant.UVC
         {
             controlsContainer.Clear();
 
-            foreach (ulong ctrl in currentCamera.GetCtrls())
+            if (currentCamera == null)
             {
-                UVCCtrlInfo info;
+                Debug.Log("No camera selected");
+                return;
+            }
 
-                try { info = currentCamera.GetInfo(ctrl); }
-                catch { continue; }
+            CreateAutoExposure();
+            CreateExposure();
+        }
+        
+        void CreateAutoExposure()
+        {
+            try
+            {
+                int value = currentCamera.GetValue(AUTO_EXPOSURE);
 
-                bool isToggle = info.min == 0 && info.max == 1;
+                var toggle = new Toggle("Auto Exposure");
+                toggle.value = value > 0;
 
-                if (isToggle) CreateToggle(ctrl);
-                else CreateSlider(ctrl, info); 
+                toggle.RegisterValueChangedCallback(evt =>
+                {
+                    currentCamera.SetValue(AUTO_EXPOSURE, evt.newValue ? 1 : 0);
+
+                    // optional: re-apply exposure when switching to manual
+                    if (!evt.newValue)
+                    {
+                        int exp = currentCamera.GetValue(EXPOSURE);
+                        currentCamera.SetValue(EXPOSURE, exp);
+                    }
+                });
+
+                controlsContainer.Add(toggle);
+            }
+            catch (Exception e)
+            {
+                Debug.Log($"Auto Exposure not available: {e.Message}");
             }
         }
 
-        void CreateSlider(
-            ulong ctrl,
-            UVCCtrlInfo info)
+        void CreateExposure()
         {
-            var label =
-                new Label(
-                    GetControlName(ctrl));
+            const ulong EXPOSURE = 0x8;
 
-            controlsContainer.Add(label);
-
-            var slider =
-                new SliderInt(
-                    info.min,
-                    info.max);
-
-            slider.value =
-                currentCamera.GetValue(ctrl);
-
-            slider.RegisterValueChangedCallback(
-                evt =>
-                {
-                    currentCamera.SetValue(
-                        ctrl,
-                        evt.newValue);
-                });
-
-            controlsContainer.Add(slider);
-        }
-
-        void CreateToggle(
-            ulong ctrl)
-        {
-            var toggle =
-                new Toggle(
-                    GetControlName(ctrl));
-
-            toggle.value =
-                currentCamera.GetValue(ctrl) > 0;
-
-            toggle.RegisterValueChangedCallback(
-                evt =>
-                {
-                    currentCamera.SetValue(
-                        ctrl,
-                        evt.newValue ? 1 : 0);
-                });
-
-            controlsContainer.Add(toggle);
-        }
-
-        string GetControlName(
-            ulong ctrl)
-        {
-            return ctrl switch
+            try
             {
-                0x00000008 => "Exposure",
-                0x00000020 => "Focus",
-                0x00020000 => "Auto Focus",
-                0x00000200 => "Zoom",
+                var info = currentCamera.GetInfo(EXPOSURE);
+                int current = currentCamera.GetValue(EXPOSURE);
 
-                0x80000001 => "Brightness",
-                0x80000002 => "Contrast",
-                0x80000004 => "Hue",
-                0x80000008 => "Saturation",
-                0x80000010 => "Sharpness",
-                0x80000020 => "Gamma",
-                0x80000040 => "White Balance",
-                0x80000200 => "Gain",
+                var slider = new SliderInt((int)info.min, (int)info.max)
+                {
+                    value = current
+                };
 
-                _ => $"0x{ctrl:X}"
-            };
+                slider.label = "Exposure";
+
+                slider.RegisterValueChangedCallback(evt =>
+                {
+                    currentCamera.SetValue(EXPOSURE, evt.newValue);
+                    Debug.Log($"Exposure = {evt.newValue}");
+                });
+
+                controlsContainer.Add(slider);
+            }
+            catch (Exception e)
+            {
+                Debug.Log($"Exposure not available: {e.Message}");
+            }
         }
+        
     }
 }

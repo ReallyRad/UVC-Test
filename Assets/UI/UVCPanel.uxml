@@ -15,6 +15,12 @@
 
         <ui:DropdownField name="resolutionDropdown"/>
 
+        <ui:Label
+            text="Controls"
+            class="section-title"/>
+
+        <ui:ScrollView
+            name="controlsContainer"/>
     </ui:VisualElement>
 
 </ui:UXML>

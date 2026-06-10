@@ -294,7 +294,7 @@ namespace Serenegiant.UVC
 			}
 
 			/**
-			 * 対応しているUVCコントロール/プロセッシング機能のtype一覧を取得
+			 * Get a list of supported UVC control/processing function types.
 			 */
 			public List<UInt64> GetCtrls()
 			{
