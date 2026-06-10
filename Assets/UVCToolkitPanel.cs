@@ -105,17 +105,6 @@ namespace Serenegiant.UVC
             }
         }
 
-        void SetLowExposure()
-        {
-            var info = currentCamera.GetInfo(EXPOSURE);
-
-            int target = Mathf.Clamp((int)info.min + 7, (int)info.min, (int)info.max);
-
-            currentCamera.SetValue(EXPOSURE, target);
-
-            Debug.Log($"Exposure forced low: {target} (min={info.min}, max={info.max})");
-        }
-        
         void BuildResolutionList()
         {
             resolutionDropdown.choices.Clear();
