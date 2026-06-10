@@ -24,7 +24,8 @@
 	<uses-feature android:name="android.hardware.camera" android:required="false" />
 
 	<!-- targetSdkVersion=28 needs this permission to request to access to UVC device on Android9 -->
-	<uses-permission android:name="android.permission.CAMERA"/>
+	<uses-permission android:name="horizonos.permission.USB_CAMERA"/>
+
 
 	<application>
 		<activity

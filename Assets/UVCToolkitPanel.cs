@@ -25,9 +25,11 @@ namespace Serenegiant.UVC
         private const string PREF_WIDTH = "uvc_width";
         private const string PREF_HEIGHT = "uvc_height";
         
-        private const ulong AUTO_EXPOSURE = 0x4;
+        private const ulong AUTO_EXPOSURE = 0x2;
+        private const ulong AUTO_EXPOSURE_PRIORITY = 0x4;
         private const ulong EXPOSURE = 0x8;
-        void Start()
+        
+        private void Start()
         {
             var root = document.rootVisualElement;
 
@@ -57,13 +59,9 @@ namespace Serenegiant.UVC
         public void Refresh()
         {
             cameras = manager.GetAttachedDevices();
-            
             Debug.Log($"Refresh: found {cameras.Count} cameras");
-
             cameraDropdown.choices.Clear();
-
             foreach (var camera in cameras) cameraDropdown.choices.Add(camera.DeviceName);
-
             if (cameras.Count > 0)
             {
                 cameraDropdown.index = 0;
@@ -86,22 +84,8 @@ namespace Serenegiant.UVC
 
             if (currentCamera != null)
             {
-                currentCamera.SetValue(AUTO_EXPOSURE, 0);
-                try
-                {
-                    int before = currentCamera.GetValue(0x2);
-
-                    currentCamera.SetValue(0x2, 1);
-
-                    int after = currentCamera.GetValue(0x2);
-
-                    Debug.Log($"AE MODE before={before} after={after}");
-                }
-                catch(Exception e)
-                {
-                    Debug.Log($"AE MODE failed: {e}");
-                }
-                
+                currentCamera.SetValue(AUTO_EXPOSURE_PRIORITY, 0); //set auto exposure priority before setting value. not sure if this is the right value
+                currentCamera.SetValue(AUTO_EXPOSURE, 1); //this value allows us to set the exposure manually on the fhd01m
             }
         }
 
@@ -143,61 +127,22 @@ namespace Serenegiant.UVC
                 return;
             }
 
-            CreateAutoExposure();
             CreateExposure();
-        }
-        
-        void CreateAutoExposure()
-        {
-            try
-            {
-                int value = currentCamera.GetValue(AUTO_EXPOSURE);
-
-                var toggle = new Toggle("Auto Exposure");
-                toggle.value = value > 0;
-
-                toggle.RegisterValueChangedCallback(evt =>
-                {
-                    currentCamera.SetValue(AUTO_EXPOSURE, evt.newValue ? 1 : 0);
-
-                    // optional: re-apply exposure when switching to manual
-                    if (!evt.newValue)
-                    {
-                        int exp = currentCamera.GetValue(EXPOSURE);
-                        currentCamera.SetValue(EXPOSURE, exp);
-                    }
-                });
-
-                controlsContainer.Add(toggle);
-            }
-            catch (Exception e)
-            {
-                Debug.Log($"Auto Exposure not available: {e.Message}");
-            }
         }
 
         void CreateExposure()
         {
-            const ulong EXPOSURE = 0x8;
-
             try
             {
                 var info = currentCamera.GetInfo(EXPOSURE);
                 int current = currentCamera.GetValue(EXPOSURE);
-
-                var slider = new SliderInt((int)info.min, (int)info.max)
-                {
-                    value = current
-                };
-
+                var slider = new SliderInt((int)info.min, (int)info.max) { value = current };
                 slider.label = "Exposure";
-
                 slider.RegisterValueChangedCallback(evt =>
                 {
                     currentCamera.SetValue(EXPOSURE, evt.newValue);
                     Debug.Log($"Exposure = {evt.newValue}");
                 });
-
                 controlsContainer.Add(slider);
             }
             catch (Exception e)
@@ -205,6 +150,5 @@ namespace Serenegiant.UVC
                 Debug.Log($"Exposure not available: {e.Message}");
             }
         }
-        
     }
 }

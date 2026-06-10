@@ -733,6 +733,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 521121369}
+  document: {fileID: 1282071867}
 --- !u!4 &1282071866
 Transform:
   m_ObjectHideFlags: 0
