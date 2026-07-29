@@ -231,25 +231,25 @@ MonoBehaviour:
   m_Name: Standalone
   m_EditorClassIdentifier: 
   features:
-  - {fileID: -5397059515572116716}
-  - {fileID: 4994117685893641957}
   - {fileID: -2361847232156592096}
   - {fileID: -3673413136910500078}
+  - {fileID: 4664082315025912412}
+  - {fileID: -3748317912127379268}
+  - {fileID: 2992215051158976746}
   - {fileID: 8998108779120914275}
+  - {fileID: 3569225685540512532}
+  - {fileID: -3065563566874100473}
+  - {fileID: 4629716550886507544}
+  - {fileID: -6224133024796149468}
   - {fileID: -7691966701585267401}
   - {fileID: 9027850535691021469}
-  - {fileID: -3313080838019208025}
-  - {fileID: -3065563566874100473}
-  - {fileID: 2992215051158976746}
   - {fileID: 3025191417935938937}
-  - {fileID: -6224133024796149468}
-  - {fileID: 4664082315025912412}
-  - {fileID: 4629716550886507544}
-  - {fileID: -7084760309002175754}
+  - {fileID: 4994117685893641957}
   - {fileID: 5634983066458495235}
+  - {fileID: -3313080838019208025}
+  - {fileID: -5397059515572116716}
   - {fileID: 2613313474389702135}
-  - {fileID: 3569225685540512532}
-  - {fileID: -3748317912127379268}
+  - {fileID: -7084760309002175754}
   m_renderMode: 1
   m_latencyOptimization: 0
   m_autoColorSubmissionMode: 1
@@ -792,7 +792,7 @@ MonoBehaviour:
   - {fileID: 3211410994209566399}
   - {fileID: -6078336650388910954}
   m_renderMode: 1
-  m_latencyOptimization: 0
+  m_latencyOptimization: 1
   m_autoColorSubmissionMode: 1
   m_colorSubmissionModes:
     m_List: 00000000
