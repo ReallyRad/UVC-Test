@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 namespace Serenegiant.UVC
 {
-    public class UVCToolkitPanel : MonoBehaviour
+    public class UIElementsUVCToolkitPanel : MonoBehaviour
     {
         [SerializeField] private UVCManager manager;
         [SerializeField] private UIDocument document;
