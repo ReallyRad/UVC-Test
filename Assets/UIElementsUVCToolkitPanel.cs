@@ -96,9 +96,9 @@ namespace Serenegiant.UVC
             int savedWidth = PlayerPrefs.GetInt(PREF_WIDTH, -1);
             int savedHeight = PlayerPrefs.GetInt(PREF_HEIGHT, -1);
             int selectedIndex = 0;
-            for (int i = 0; i < currentCamera.SupportedSizes.Length; i++)
+            for (int i = 0; i < currentCamera.SupportedSize.Length; i++)
             {
-                var size = currentCamera.SupportedSizes[i];
+                var size = currentCamera.SupportedSize[i];
                 resolutionDropdown.choices.Add($"{size.Width}x{size.Height}");
                 if (size.Width == savedWidth && size.Height == savedHeight) selectedIndex = i;
             }
@@ -110,7 +110,7 @@ namespace Serenegiant.UVC
             if (currentCamera == null) return;
             int index = resolutionDropdown.index;
             if (index < 0) return;
-            var size = currentCamera.SupportedSizes[index];
+            var size = currentCamera.SupportedSize[index];
             PlayerPrefs.SetInt(PREF_WIDTH, (int)size.Width);
             PlayerPrefs.SetInt(PREF_HEIGHT, (int)size.Height);
             PlayerPrefs.Save();
