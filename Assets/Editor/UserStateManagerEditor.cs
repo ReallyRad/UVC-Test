@@ -1,0 +1,67 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using ScriptableObjectArchitecture;
+using UnityEditor;
+using UnityEngine;
+[CustomEditor(typeof(UserStateManager),true)]
+public class UserStateManagerEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        UserStateManager userStateManager = (UserStateManager) target;
+
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+
+        var selfState = userStateManager.selfState;
+        var otherState = userStateManager.otherState;
+        var selfStateEvent = userStateManager.selfStateGameEvent;
+        var otherStateEvent = userStateManager.otherStateGameEvent;
+        
+        if (GUILayout.Button("Other is ready"))
+        {
+            otherState.Value = UserState.readyToStart; //statusManager.OtherUserIsReady();
+            otherStateEvent.Raise(UserState.readyToStart);
+        }
+
+        if (GUILayout.Button("Other is gone"))
+        {
+            otherState.Value = UserState.headsetOff; //statusManager.OtherLeft();
+            otherStateEvent.Raise(UserState.headsetOff);
+        }
+        
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+
+        if (GUILayout.Button("Other put headset on"))
+        {
+            otherState.Value = UserState.headsetOn; 
+            otherStateEvent.Raise(UserState.headsetOn);
+        }
+
+        if (GUILayout.Button("Self put headset on"))
+        {
+            userStateManager.previousSelfState.Value = selfState.Value;
+            selfState.Value = UserState.headsetOn;
+            selfStateEvent.Raise(UserState.headsetOn);
+        } 
+        
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+
+        if (GUILayout.Button("Self is ready"))
+        {
+            userStateManager.previousSelfState.Value = selfState.Value;
+            selfState.Value = UserState.readyToStart; 
+            selfStateEvent.Raise(UserState.readyToStart);
+        }
+
+        if (GUILayout.Button("Self is gone"))
+        {
+            userStateManager.previousSelfState.Value = selfState.Value;
+            selfState.Value = UserState.headsetOff; 
+            selfStateEvent.Raise(UserState.headsetOff);
+        } 
+        
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+        
+    }
+}
