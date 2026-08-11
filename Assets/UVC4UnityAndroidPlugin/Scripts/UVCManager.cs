@@ -784,7 +784,7 @@ namespace Serenegiant.UVC
 							TextureFormat.ARGB32,
 							false, /* mipmap */
 							true /* linear */);
-						tex.filterMode = FilterMode.Point;
+						tex.filterMode = FilterMode.Bilinear;
 						tex.Apply();
 						info.previewTexture = tex;
 						var nativeTexPtr = info.previewTexture.GetNativeTexturePtr();
