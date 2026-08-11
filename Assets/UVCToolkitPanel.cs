@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Serenegiant.UVC;
 using TMPro;
 using UnityEngine;
@@ -13,7 +14,6 @@ public class UVCToolkitPanel : MonoBehaviour
     [SerializeField] private TMP_Dropdown _cameraDropdown;
     [SerializeField] private TMP_Dropdown _resolutionDropdown;
     [SerializeField] private TMP_Text _exposureText;
-    [SerializeField] private Slider _exposureSlider;
 
     private List<UVCManager.CameraInfo> _cameras = new();
     private UVCManager.CameraInfo _currentCamera;
@@ -45,6 +45,12 @@ public class UVCToolkitPanel : MonoBehaviour
             _lastCameras = current;
         }
     }
+
+    public void SetExposure(float exposure)
+    {
+        _currentCamera.SetValue(EXPOSURE, (int) exposure);
+        Debug.Log("SetExposure to " + exposure);
+    }
     
     private void Refresh()
     {
@@ -73,7 +79,7 @@ public class UVCToolkitPanel : MonoBehaviour
         if (index < 0 || index >= _cameras.Count) return;
         _currentCamera = _cameras[index];
         _resolutionDropdown.ClearOptions();
-;
+
         int selectedIndex = 0;
         for (int i = 0; i < _currentCamera.SupportedSize.Length; i++)
         {
