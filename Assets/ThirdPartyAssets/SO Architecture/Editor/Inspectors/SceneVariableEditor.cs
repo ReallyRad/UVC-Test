@@ -27,11 +27,11 @@ namespace ScriptableObjectArchitecture.Editor
         {
             var sceneVariable = (SceneVariable)target;
             var sceneInfoProperty = serializedObject.FindProperty(SCENE_INFO_PROPERTY);
-            if (sceneVariable.Value.Scene == null)
+            /*if (sceneVariable.Value.Scene == null)
             {
                 EditorGUILayout.HelpBox(SCENE_NOT_ASSIGNED_WARNING, MessageType.Warning);
             }
-            else if (!sceneVariable.Value.IsSceneInBuildSettings)
+            else */if (!sceneVariable.Value.IsSceneInBuildSettings)
             {
                 EditorGUILayout.HelpBox(SCENE_NOT_IN_BUILD_SETTINGS_WARNING, MessageType.Warning);
             }
