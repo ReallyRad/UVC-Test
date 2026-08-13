@@ -290,6 +290,7 @@ MonoBehaviour:
   - {fileID: 5634983066458495235}
   - {fileID: -3313080838019208025}
   - {fileID: -5397059515572116716}
+  - {fileID: 7185794000865892348}
   - {fileID: 2613313474389702135}
   - {fileID: -7084760309002175754}
   m_renderMode: 1
@@ -1155,6 +1156,26 @@ MonoBehaviour:
   _parametricHapticsSupported: 0
   _simultaneousHandsAndControllersSupported: 0
   _storageEnabled: 0
+--- !u!114 &7185794000865892348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 265a43183593f1e48bb0f88cce2ea532, type: 3}
+  m_Name: SessionStateFeature Standalone
+  m_EditorClassIdentifier: 
+  m_enabled: 0
+  nameUi: Session State Tracker
+  version: 1.0.0
+  featureIdInternal: com.beanotherlab.presence
+  openxrExtensionStrings: XR_test
+  company: BeAnotherLab
+  priority: 0
+  required: 0
 --- !u!114 &7186069849425493783
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class IPInputField : MonoBehaviour
 {
     
-    [SerializeField] private InputField _IPInputField;
+    [SerializeField] private TMP_InputField _IPInputField;
 
     private void Awake()
     {
@@ -22,7 +23,7 @@ public class IPInputField : MonoBehaviour
         SetIpInputField();
     }
 
-    public void SetIpInputField()
+    private void SetIpInputField()
     {
         if (_IPInputField.text != null) _IPInputField.text = PlayerPrefs.GetString("othersIP");
     }    
