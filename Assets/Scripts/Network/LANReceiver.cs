@@ -36,8 +36,7 @@ public class LANReceiver : MonoBehaviour
     
     private void OnDataReceived(System.IAsyncResult result)
     {
-        if (!running)
-            return;
+        if (!running) return;
 
         try
         {
@@ -46,9 +45,7 @@ public class LANReceiver : MonoBehaviour
             byte[] data = udp.EndReceive(result, ref remoteEndPoint);
             string message = Encoding.UTF8.GetString(data);
 
-            Debug.Log(
-                $"Received '{message}' from {remoteEndPoint.Address}:{remoteEndPoint.Port}"
-            );
+            Debug.Log($"Received '{message}' from {remoteEndPoint.Address}:{remoteEndPoint.Port}");
 
             // Continue listening for the next packet.
             udp.BeginReceive(OnDataReceived, null);

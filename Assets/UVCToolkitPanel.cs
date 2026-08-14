@@ -4,16 +4,22 @@ using System.Runtime.InteropServices;
 using Serenegiant.UVC;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class UVCToolkitPanel : MonoBehaviour
 {
+    public delegate void OnSetRepeater(bool on);
+    public static OnSetRepeater SetRepeater = delegate {};
+
+
     [SerializeField] private UVCManager _manager;
     
     [SerializeField] private Button _showConsoleButton;
     [SerializeField] private TMP_Dropdown _cameraDropdown;
     [SerializeField] private TMP_Dropdown _resolutionDropdown;
     [SerializeField] private TMP_Text _exposureText;
+    [SerializeField] private Toggle _repeaterToggle;
+    [SerializeField] private TMP_Text _localIPAddressText;
 
     private List<UVCManager.CameraInfo> _cameras = new();
     private UVCManager.CameraInfo _currentCamera;
@@ -26,12 +32,28 @@ public class UVCToolkitPanel : MonoBehaviour
     private const ulong AUTO_EXPOSURE_PRIORITY = 0x4;
     private const ulong EXPOSURE = 0x8;
     
+    private void Awake()
+    {
+        _repeaterToggle.onValueChanged.AddListener(delegate { SetRepeater(_repeaterToggle.isOn); });
+    }
+    
     private void Start()
     {
         //_showConsoleButton.clicked += () => LunarConsole.Show();
+        _repeaterToggle.isOn = PlayerPrefs.GetInt("repeater") == 1;
+        SetRepeater(_repeaterToggle.isOn);
+
         _cameraDropdown.onValueChanged.AddListener(OnCameraChanged);
         _resolutionDropdown.onValueChanged.AddListener(OnResolutionChanged);
 
+        _repeaterToggle.onValueChanged.AddListener(delegate
+        {
+            SetRepeater(_repeaterToggle.isOn);
+            SetRepeaterPlayerPrefs(_repeaterToggle.isOn);
+        });
+
+        _localIPAddressText.text = "Local IP Address : " + GetLocalIPAddress();
+        
         Refresh();
     }
 
@@ -92,16 +114,6 @@ public class UVCToolkitPanel : MonoBehaviour
         _resolutionDropdown.value = selectedIndex;        
         _currentCamera.UpdateCtrls();
        
-        var info = _currentCamera.GetInfo(EXPOSURE);
-        int current = _currentCamera.GetValue(EXPOSURE);
-        var slider = new SliderInt(info.min, info.max) { value = current };
-        slider.label = "Exposure";
-        slider.RegisterValueChangedCallback(evt =>
-        {
-            _currentCamera.SetValue(EXPOSURE, evt.newValue);
-            Debug.Log($"Exposure = {evt.newValue}");
-        });
-        
         if (_currentCamera != null)
         {
             _currentCamera.SetValue(AUTO_EXPOSURE_PRIORITY, 0); //set auto exposure priority before setting value. not sure if this is the right value
@@ -124,5 +136,17 @@ public class UVCToolkitPanel : MonoBehaviour
         Debug.Log($"SetVideoSize returned {changed}");
     }
 
+    private void SetRepeaterPlayerPrefs(bool r) //TODO this was in OSCManager. make variable? 
+    {
+        if (r) PlayerPrefs.SetInt("repeater", 1);
+        else PlayerPrefs.SetInt("repeater", 0);
+    }
+
+    private string GetLocalIPAddress()
+    {
+        var host = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName());
+        foreach (var ip in host.AddressList) if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) return ip.ToString();
+        throw new Exception("No network adapters with an IPv4 address in the system!");
+    }
 
 }

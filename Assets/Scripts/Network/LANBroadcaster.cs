@@ -30,8 +30,7 @@ public class LANBroadcaster : MonoBehaviour
         byte[] data = Encoding.UTF8.GetBytes("HELLO");
 
         // 255.255.255.255 = broadcast to the local network
-        udp.Send(data, data.Length,
-            new IPEndPoint(IPAddress.Broadcast, port));
+        udp.Send(data, data.Length, new IPEndPoint(IPAddress.Broadcast, port));
     }
    
 }
