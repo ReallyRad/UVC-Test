@@ -18,20 +18,19 @@ public class CustomNetworkManager : NetworkManager
     private void Start()    
     {
         if (offlineMode) Instantiate(playerPrefab); //TODO needed?
-        
-        networkAddress = PlayerPrefs.GetString("othersIP");
 
         if (PlayerPrefs.GetInt("repeater", 0) == 1)
         {
             StartHost();
         }
-        else
-        {
-            StartCoroutine(TryConnect());
-            
-        }
     }
 
+    public void OnServerFound(ServerResponse response)
+    {
+        networkAddress = response.EndPoint.ToString();
+        StartCoroutine(TryConnect());
+    }
+    
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
         // add player at correct spawn position

@@ -2368,30 +2368,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: NetworkManager
       objectReference: {fileID: 0}
-    - target: {fileID: 7270249489532960083, guid: 4e3d25a08b70a6043969d900756895ef, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7784721312409477163, guid: 4e3d25a08b70a6043969d900756895ef, type: 3}
-      propertyPath: OnServerFound.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 3910890763515296607}
+      propertyPath: OnServerFound.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e3d25a08b70a6043969d900756895ef, type: 3}
---- !u!114 &3910890763515296607 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6242490074485726056, guid: 4e3d25a08b70a6043969d900756895ef, type: 3}
-  m_PrefabInstance: {fileID: 3910890763515296606}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88c37d3deca7a834d80cfd8d3cfcc510, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &4429479033794704233
 Transform:
   m_ObjectHideFlags: 0
