@@ -11,10 +11,9 @@ namespace Mirror.Examples.Pong
     {
         public delegate void OnSignalingSelf(Transform selfTransform);
         public static OnSignalingSelf SignalingSelf;
-
-        [SerializeField] private BoolGameEvent _dimGameEvent;
-        [SerializeField] private GameObject _pano;
+        public GameObject pano;
         
+        [SerializeField] private BoolGameEvent _dimGameEvent;
         private GameObject _mainCamera;
         private GameObject _videoFeedFlipParent;
 
@@ -80,7 +79,7 @@ namespace Mirror.Examples.Pong
         private void Rotate()
         {
             _tiltAngle += 90;
-            _pano.transform.eulerAngles = new Vector3(0, 0, _tiltAngle);
+            pano.transform.eulerAngles = new Vector3(0, 0, _tiltAngle);
             PlayerPrefs.SetFloat("tiltAngle", _tiltAngle);
         }
 

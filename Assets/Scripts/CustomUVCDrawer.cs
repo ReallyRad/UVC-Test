@@ -1,6 +1,7 @@
 ﻿#define ENABLE_LOG
 using System;
 using System.Collections.Generic;
+using Mirror.Examples.Pong;
 using UnityEngine;
 using UnityEngine.UI;
 using Serenegiant.UVC;
@@ -67,7 +68,7 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 
 	private void ReceivedRenderTarget(GameObject player)
 	{
-		RenderTargets.Add(player);
+		RenderTargets.Add(player.GetComponent<CustomPlayer>().pano);
 		UpdateRenderTarget();
 	}
 	
