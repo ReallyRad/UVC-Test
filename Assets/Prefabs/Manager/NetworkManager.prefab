@@ -82,6 +82,7 @@ MonoBehaviour:
   evaluationInterval: 3
   timeInterpolationGui: 0
   offlineMode: 0
+  _networkDiscovery: {fileID: 7784721312409477163}
 --- !u!114 &1268579020477383422
 MonoBehaviour:
   m_ObjectHideFlags: 0

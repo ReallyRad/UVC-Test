@@ -15,6 +15,9 @@ public class CustomNetworkManager : NetworkManager
     public delegate void OnConnectionEstablished();
     public static OnConnectionEstablished ConnectionEstablished;
     
+    [Header("Discovery")]
+    [SerializeField] private NetworkDiscovery _networkDiscovery;
+    
     private void Start()    
     {
         if (offlineMode) Instantiate(playerPrefab); //TODO needed?
@@ -22,6 +25,10 @@ public class CustomNetworkManager : NetworkManager
         if (PlayerPrefs.GetInt("repeater", 0) == 1)
         {
             StartHost();
+        }
+        else
+        {
+            _networkDiscovery.StartDiscovery();
         }
     }
 
