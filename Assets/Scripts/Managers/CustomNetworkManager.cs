@@ -13,18 +13,19 @@ public class CustomNetworkManager : NetworkManager
     public bool offlineMode; //TODO remove?;
     
     public delegate void OnConnectionEstablished();
-    public static OnConnectionEstablished ConnectionEstablished;
+    public static OnConnectionEstablished ConnectionEstablished = delegate {};
     
     [Header("Discovery")]
     [SerializeField] private NetworkDiscovery _networkDiscovery;
     
-    private void Start()    
+    private void Start()   
     {
         if (offlineMode) Instantiate(playerPrefab); //TODO needed?
 
         if (PlayerPrefs.GetInt("repeater", 0) == 1)
         {
             StartHost();
+            _networkDiscovery.AdvertiseServer();
         }
         else
         {
@@ -34,7 +35,9 @@ public class CustomNetworkManager : NetworkManager
 
     public void OnServerFound(ServerResponse response)
     {
-        networkAddress = response.EndPoint.ToString();
+        networkAddress = response.EndPoint.Address.ToString();
+        _networkDiscovery.StopDiscovery();
+        //StartClient(response.uri);
         StartCoroutine(TryConnect());
     }
     
@@ -44,6 +47,7 @@ public class CustomNetworkManager : NetworkManager
         GameObject player = Instantiate(playerPrefab);
         NetworkServer.AddPlayerForConnection(conn, player);
         ConnectionEstablished();
+        Debug.Log("connection established");
     }
 
     public void EnableNetworkGUI(bool show)
@@ -51,7 +55,7 @@ public class CustomNetworkManager : NetworkManager
         //GetComponent<NetworkManagerHUD>().showGUI = show;
     }         
     
-    public override void OnServerDisconnect(NetworkConnectionToClient conn)
+    public override void OnServerDisconnect(NetworkConnectionToClient conn) //TODO handle disconnection
     {
         // call base functionality (actually destroys the player)
         base.OnServerDisconnect(conn);
@@ -65,6 +69,7 @@ public class CustomNetworkManager : NetworkManager
             StartClient();
             yield return new WaitForSeconds(4);
         }
+            Debug.Log("connected to host");
     }
     
 }
