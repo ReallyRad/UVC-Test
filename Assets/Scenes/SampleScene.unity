@@ -802,7 +802,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &826017284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1008,7 +1008,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000049591064
+      value: 0.00004196167
       objectReference: {fileID: 0}
     - target: {fileID: 22414360, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2368,6 +2368,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NetworkManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7270249489532960083, guid: 4e3d25a08b70a6043969d900756895ef, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2629,10 +2633,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1711438259885748071, guid: 29ad19a4d683a5040b94c312cae13ca5, type: 3}
-      propertyPath: 'RenderTargets.Array.data[0]'
-      value: 
-      objectReference: {fileID: 217197133}
     - target: {fileID: 3593644715046098645, guid: 29ad19a4d683a5040b94c312cae13ca5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2673,13 +2673,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3820969425607501474, guid: 29ad19a4d683a5040b94c312cae13ca5, type: 3}
+      propertyPath: AudioTarget
+      value: 
+      objectReference: {fileID: 217197133}
+    - target: {fileID: 3820969425607501474, guid: 29ad19a4d683a5040b94c312cae13ca5, type: 3}
+      propertyPath: RenderTargets.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3820969425607501474, guid: 29ad19a4d683a5040b94c312cae13ca5, type: 3}
+      propertyPath: 'RenderTargets.Array.data[0]'
+      value: 
+      objectReference: {fileID: 217197133}
     - target: {fileID: 7216910567601951608, guid: 29ad19a4d683a5040b94c312cae13ca5, type: 3}
       propertyPath: m_Name
       value: VideoManager
       objectReference: {fileID: 0}
     - target: {fileID: 7216910567601951608, guid: 29ad19a4d683a5040b94c312cae13ca5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
