@@ -48,7 +48,7 @@ public class OscManager : MonoBehaviour {
         //ArduinoManager.SerialFailure += SendSerialFailure;
         UserStateManager.SendThisUserStatus += SendThisUserStatus;
         SettingsGUI.SetRepeater += SetRepeater;
-        CustomNetworkManager.ConnectionEstablished += ConnectionEstablished;
+        //CustomNetworkManager.ConnectionEstablished += ConnectionEstablished;
     }
 
     private void OnDisable()
@@ -57,7 +57,7 @@ public class OscManager : MonoBehaviour {
         //ArduinoManager.SerialFailure -= SendSerialFailure;
         UserStateManager.SendThisUserStatus -= SendThisUserStatus;
         SettingsGUI.SetRepeater -= SetRepeater;
-        CustomNetworkManager.ConnectionEstablished -= ConnectionEstablished;
+        //CustomNetworkManager.ConnectionEstablished -= ConnectionEstablished;
     }
 
     private void Awake()

@@ -11,14 +11,14 @@ GameObject:
   - component: {fileID: 3593644715046098645}
   - component: {fileID: 5285081833365691693}
   - component: {fileID: 5634025938466180432}
-  - component: {fileID: 1711438259885748071}
+  - component: {fileID: 3820969425607501474}
   m_Layer: 0
   m_Name: VideoManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3593644715046098645
 Transform:
   m_ObjectHideFlags: 0
@@ -64,7 +64,7 @@ MonoBehaviour:
   UACEnabled: 0
   RenderBeforeSceneRendering: 0
   UVCDrawers: []
---- !u!114 &1711438259885748071
+--- !u!114 &3820969425607501474
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -73,18 +73,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7216910567601951608}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efb1bc18f15fa0546b998062ea4861a3, type: 3}
+  m_Script: {fileID: 11500000, guid: 850c5edb6780a408b80c3688d45c7086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultWidth: 1920
-  DefaultHeight: 1080
   UACEnabled: 0
-  UVCFilters:
-  - Description: 
-    Vid: 0
-    Pid: 0
-    DeviceName: 
-    IsExclude: 0
-  RenderTargets:
-  - {fileID: 0}
+  UVCFilters: []
+  RenderTargets: []
   AudioTarget: {fileID: 0}

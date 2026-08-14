@@ -12,7 +12,7 @@ public class CustomNetworkManager : NetworkManager
 {
     public bool offlineMode; //TODO remove?;
     
-    public delegate void OnConnectionEstablished();
+    public delegate void OnConnectionEstablished(GameObject playerGameObject);
     public static OnConnectionEstablished ConnectionEstablished = delegate {};
     
     [Header("Discovery")]
@@ -46,7 +46,7 @@ public class CustomNetworkManager : NetworkManager
         // add player at correct spawn position
         GameObject player = Instantiate(playerPrefab);
         NetworkServer.AddPlayerForConnection(conn, player);
-        ConnectionEstablished();
+        ConnectionEstablished(player);
         Debug.Log("connection established");
     }
 
@@ -69,7 +69,7 @@ public class CustomNetworkManager : NetworkManager
             StartClient();
             yield return new WaitForSeconds(4);
         }
-            Debug.Log("connected to host");
+        Debug.Log("connected to host");
     }
     
 }

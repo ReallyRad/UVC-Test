@@ -1,8 +1,11 @@
 ﻿#define ENABLE_LOG
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Serenegiant.UVC;
+using Object = UnityEngine.Object;
+
 public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 {
 	public UVCFilter[] UVCFilters; //For filters during connection and drawing.
@@ -17,9 +20,14 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 	private Texture[] SavedTextures; //the original texture
 	private Quaternion[] quaternions;
 
-	void Start()
+	private void OnEnable()
 	{
-		UpdateRenderTarget();
+		CustomNetworkManager.ConnectionEstablished += ReceivedRenderTarget;
+	}
+
+	private void OnDisable()
+	{
+		CustomNetworkManager.ConnectionEstablished -= ReceivedRenderTarget;
 	}
 
 	public bool OnUVCAttachEvent(UVCManager manager, UVCDevice device)
@@ -57,11 +65,17 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 	}
 
 
+	private void ReceivedRenderTarget(GameObject player)
+	{
+		RenderTargets.Add(player);
+		UpdateRenderTarget();
+	}
+	
 	private void UpdateRenderTarget()
 	{
 		bool found = false;
 		
-		if ((RenderTargets != null) && (RenderTargets.Count > 0))
+		if (RenderTargets != null && RenderTargets.Count > 0)
 		{
 			TargetMaterials = new Object[RenderTargets.Count];
 			SavedTextures = new Texture[RenderTargets.Count];
