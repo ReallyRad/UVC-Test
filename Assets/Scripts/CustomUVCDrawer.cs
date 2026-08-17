@@ -14,7 +14,10 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 	// A GameObject that holds the Material to which the image from the UVC device will be rendered.
     // If not set, the same GameObject to which this script is assigned will be used.
 	[SerializeField] private MeshRenderer _renderTarget;
+	[SerializeField] private Texture _texture;
 
+	
+	
 	private const string TAG = "UVCDrawer#";
 
 	private void OnEnable()
@@ -52,6 +55,7 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 	public void OnUVCStartEvent(UVCManager manager, UVCDevice device, Texture tex) //Video acquisition has begun
 	{
 		Console.WriteLine($"{TAG}HandleOnStartPreview:({tex})");
+		_texture = tex;
 		_renderTarget.material.mainTexture = tex;
 	}
 
@@ -62,8 +66,10 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 
 	private void ReceivedRenderTarget(GameObject player)
 	{
-		
-
+		Debug.Log("ReceivedRenderTarget");
+		_renderTarget.gameObject.SetActive(false);
+		_renderTarget = player.gameObject.GetComponent<CustomPlayer>().pano.GetComponent<MeshRenderer>();
+		_renderTarget.material.mainTexture = _texture;
 	}
 	
 	public bool IsUACEnabled(UVCManager manager, UVCDevice device) //TODO kept to satisfy IUVC requirements
@@ -71,11 +77,11 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 		return false;
 	}
 
-	public void OnUACStartEvent(UVCManager manager, UVCDevice device, AudioClip audioClip)
+	public void OnUACStartEvent(UVCManager manager, UVCDevice device, AudioClip audioClip) //TODO kept to satisfy IUVC requirements
 	{
 	}
 
-	public void OnUACStopEvent(UVCManager manager, UVCDevice device)
+	public void OnUACStopEvent(UVCManager manager, UVCDevice device) //TODO kept to satisfy IUVC requirements
 	{
 	}
 
