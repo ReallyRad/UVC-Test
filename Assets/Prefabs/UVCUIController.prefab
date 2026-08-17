@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3681862671656310826}
   - component: {fileID: 7977408457492620035}
   - component: {fileID: 6910659444714781483}
-  - component: {fileID: 2496471845659273539}
   - component: {fileID: 3697700652009034670}
+  - component: {fileID: 2496471845659273539}
   m_Layer: 0
   m_Name: UVCUIController
   m_TagString: Untagged
@@ -80,25 +80,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2496471845659273539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325798821679841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a10f700054044c4583b4f933151e0fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _manager: {fileID: 0}
-  _showConsoleButton: {fileID: 0}
-  _cameraDropdown: {fileID: 8426631233254513035}
-  _resolutionDropdown: {fileID: 4008508705454709132}
-  _exposureText: {fileID: 3391358367953807449}
-  _repeaterToggle: {fileID: 4174576579145304879}
-  _localIPAddressText: {fileID: 359610797220635341}
 --- !u!114 &3697700652009034670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,6 +99,25 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RaycastTriggerInteraction: 1
+--- !u!114 &2496471845659273539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 325798821679841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a10f700054044c4583b4f933151e0fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _manager: {fileID: 0}
+  _showConsoleButton: {fileID: 0}
+  _cameraDropdown: {fileID: 8426631233254513035}
+  _resolutionDropdown: {fileID: 4008508705454709132}
+  _exposureText: {fileID: 3391358367953807449}
+  _repeaterToggle: {fileID: 4174576579145304879}
+  _localIPAddressText: {fileID: 359610797220635341}
 --- !u!1 &563719776684573044
 GameObject:
   m_ObjectHideFlags: 0
@@ -1016,7 +1016,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04568e99e33d0324bae0fd1dabcb5639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _IPInputField: {fileID: 8532055184543837424}
+  _IPInputField: {fileID: 0}
 --- !u!1 &3083619652495221559
 GameObject:
   m_ObjectHideFlags: 0
