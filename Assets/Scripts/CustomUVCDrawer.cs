@@ -18,8 +18,6 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 	private const string TAG = "UVCDrawer#";
 
 	private Object[] TargetMaterials; //the material to render the image, obtained through either object's skybox, renderer, rawImage or object material, in that order
-	private Texture[] SavedTextures; //the original texture
-	private Quaternion[] quaternions;
 
 	private void OnEnable()
 	{
@@ -62,7 +60,6 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 	public void OnUVCStopEvent(UVCManager manager, UVCDevice device) //Video acquisition has finished.
 	{
 		Console.WriteLine($"{TAG}OnUVCStopEvent:{device}");
-		RestoreTexture(); //Restore the texture to which the drawing is directed.
 	}
 
 
@@ -79,8 +76,6 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 		if (RenderTargets != null && RenderTargets.Count > 0)
 		{
 			TargetMaterials = new Object[RenderTargets.Count];
-			SavedTextures = new Texture[RenderTargets.Count];
-			quaternions = new Quaternion[RenderTargets.Count];
 			
 			int i = 0;
 			foreach (var target in RenderTargets)
@@ -100,8 +95,6 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 			// Attempts to obtain a target from a GameObject that has been added as a component.
 			// Set the gameObject to XXX RenderTargets?
 			TargetMaterials = new Object[1];
-			SavedTextures = new Texture[1];
-			quaternions = new Quaternion[1];
 			TargetMaterials[0] = GetTargetMaterial(gameObject);
 			found = TargetMaterials[0] != null;
 		}
@@ -148,25 +141,6 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 		return null;
 	}
 
-	private void RestoreTexture()
-	{
-		for (int i = 0; i < TargetMaterials.Length; i++)
-		{
-			var target = TargetMaterials[i];
-			try
-			{
-				if (target is Material) (target as Material).mainTexture = SavedTextures[i];
-				else if (target is RawImage) (target as RawImage).texture = SavedTextures[i];
-			}
-			catch
-			{
-				Console.WriteLine($"{TAG}RestoreTexture:Exception cought");
-			}
-			SavedTextures[i] = null;
-			quaternions[i] = Quaternion.identity;
-		}
-	}
-
 	private void HandleOnStartPreview(Texture tex) // Processing at the start of video acquisition
 	{
 		Console.WriteLine($"{TAG}HandleOnStartPreview:({tex})");
@@ -176,13 +150,11 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 			if (target is Material)
 			{
 				Console.WriteLine($"{TAG}HandleOnStartPreview:assign Texture to Material({target})");
-				SavedTextures[i++] = (target as Material).mainTexture;
 				(target as Material).mainTexture = tex;
 			}
 			else if (target is RawImage)
 			{
 				Console.WriteLine($"{TAG}HandleOnStartPreview:assign Texture to RawImage({target})");
-				SavedTextures[i++] = (target as RawImage).texture;
 				(target as RawImage).texture = tex;
 			}
 		}
