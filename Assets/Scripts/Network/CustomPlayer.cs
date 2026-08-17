@@ -11,6 +11,7 @@ namespace Mirror.Examples.Pong
     {
         public delegate void OnSignalingSelf(Transform selfTransform);
         public static OnSignalingSelf SignalingSelf;
+        
         public GameObject pano;
         
         [SerializeField] private BoolGameEvent _dimGameEvent;
@@ -58,8 +59,7 @@ namespace Mirror.Examples.Pong
         // need to use FixedUpdate for rigidbody
         private void Update()
         {
-            // only let the local player control the racket.
-            // don't control other player's rackets
+            // only let the local player control the racket. don't control other player's rackets
             if (isLocalPlayer)
             {
                 transform.rotation = _mainCamera.transform.rotation;
@@ -67,8 +67,8 @@ namespace Mirror.Examples.Pong
             }
             
             if (Input.GetKeyDown("r")) Rotate();
-
         }
+        
         
         private IEnumerator StartupDim() 
         {

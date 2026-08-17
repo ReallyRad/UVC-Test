@@ -15,19 +15,17 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
     // If not set, the same GameObject to which this script is assigned will be used.
 	[SerializeField] private MeshRenderer _renderTarget;
 	[SerializeField] private Texture _texture;
-
-	
 	
 	private const string TAG = "UVCDrawer#";
 
 	private void OnEnable()
 	{
-		CustomNetworkManager.ConnectionEstablished += ReceivedRenderTarget;
+		CustomPlayer.SignalingSelf += ReceivedRenderTarget;
 	}
 
 	private void OnDisable()
 	{
-		CustomNetworkManager.ConnectionEstablished -= ReceivedRenderTarget;
+		CustomPlayer.SignalingSelf -= ReceivedRenderTarget;
 	}
 
 	public bool OnUVCAttachEvent(UVCManager manager, UVCDevice device)
@@ -64,10 +62,10 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 		Console.WriteLine($"{TAG}OnUVCStopEvent:{device}");
 	}
 
-	private void ReceivedRenderTarget(GameObject player)
+	private void ReceivedRenderTarget(Transform player)
 	{
-		Debug.Log("ReceivedRenderTarget");
-		_renderTarget.gameObject.SetActive(false);
+		Debug.Log("ReceivedRenderTarget " + player.gameObject.name);
+		//_renderTarget.gameObject.SetActive(false);
 		_renderTarget = player.gameObject.GetComponent<CustomPlayer>().pano.GetComponent<MeshRenderer>();
 		_renderTarget.material.mainTexture = _texture;
 	}
