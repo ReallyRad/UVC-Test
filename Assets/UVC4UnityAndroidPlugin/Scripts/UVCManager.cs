@@ -20,7 +20,7 @@ public static class Console
 {
 	public static void WriteLine(object message)
 	{
-		Debug.Log(message);
+		//Debug.Log(message);
 	}
 }
 namespace Serenegiant.UVC

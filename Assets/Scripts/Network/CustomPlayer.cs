@@ -72,8 +72,10 @@ namespace Mirror.Examples.Pong
         
         private IEnumerator StartupDim() 
         {
+            Debug.Log("created pano, about to dim");
             yield return new WaitForSeconds(2);
             _dimGameEvent.Raise(true);
+            Debug.Log("startup dim");
         }
 
         private void Rotate()

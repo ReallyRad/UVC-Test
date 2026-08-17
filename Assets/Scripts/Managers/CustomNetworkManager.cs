@@ -24,17 +24,20 @@ public class CustomNetworkManager : NetworkManager
 
         if (PlayerPrefs.GetInt("repeater", 0) == 1)
         {
+            Debug.Log("starting host, advertising server");
             StartHost();
             _networkDiscovery.AdvertiseServer();
         }
         else
         {
+            Debug.Log("start looking for server");
             _networkDiscovery.StartDiscovery();
         }
     }
 
     public void OnServerFound(ServerResponse response)
     {
+        Debug.Log("OnServerFound");
         networkAddress = response.EndPoint.Address.ToString();
         _networkDiscovery.StopDiscovery();
         //StartClient(response.uri);
@@ -43,11 +46,11 @@ public class CustomNetworkManager : NetworkManager
     
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
+        Debug.Log("OnServerAddPlayer, spawning player and adding player for connection");
         // add player at correct spawn position
         GameObject player = Instantiate(playerPrefab);
         NetworkServer.AddPlayerForConnection(conn, player);
         ConnectionEstablished(player);
-        Debug.Log("connection established");
     }
 
     public void EnableNetworkGUI(bool show)
