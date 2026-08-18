@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3697700652009034670}
   - component: {fileID: 2496471845659273539}
   m_Layer: 0
-  m_Name: UVCUIController
+  m_Name: StandaloneSettingsUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
   _cameraDropdown: {fileID: 8426631233254513035}
   _resolutionDropdown: {fileID: 4008508705454709132}
   _exposureText: {fileID: 3391358367953807449}
-  _repeaterToggle: {fileID: 4174576579145304879}
+  _hostToggle: {fileID: 4174576579145304879}
   _localIPAddressText: {fileID: 359610797220635341}
 --- !u!1 &563719776684573044
 GameObject:
@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 1899119861251881364}
   - component: {fileID: 4174576579145304879}
   m_Layer: 0
-  m_Name: RepeaterToggle
+  m_Name: Host
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2324,7 +2324,7 @@ GameObject:
   - component: {fileID: 8544795997643872135}
   - component: {fileID: 7755329253527073077}
   m_Layer: 0
-  m_Name: RepeaterLText
+  m_Name: HostText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2377,9 +2377,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Repeater
-
-'
+  m_text: Host
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

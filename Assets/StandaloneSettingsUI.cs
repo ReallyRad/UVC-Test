@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UVCToolkitPanel : MonoBehaviour
+public class StandaloneSettingsUI : MonoBehaviour
 {
     public delegate void OnSetRepeater(bool on);
     public static OnSetRepeater SetRepeater = delegate {};
@@ -18,7 +18,7 @@ public class UVCToolkitPanel : MonoBehaviour
     [SerializeField] private TMP_Dropdown _cameraDropdown;
     [SerializeField] private TMP_Dropdown _resolutionDropdown;
     [SerializeField] private TMP_Text _exposureText;
-    [SerializeField] private Toggle _repeaterToggle;
+    [SerializeField] private Toggle _hostToggle;
     [SerializeField] private TMP_Text _localIPAddressText;
 
     private List<UVCManager.CameraInfo> _cameras = new();
@@ -34,22 +34,22 @@ public class UVCToolkitPanel : MonoBehaviour
     
     private void Awake()
     {
-        _repeaterToggle.onValueChanged.AddListener(delegate { SetRepeater(_repeaterToggle.isOn); });
+        _hostToggle.onValueChanged.AddListener(delegate { SetRepeater(_hostToggle.isOn); });
     }
     
     private void Start()
     {
         //_showConsoleButton.clicked += () => LunarConsole.Show();
-        _repeaterToggle.isOn = PlayerPrefs.GetInt("repeater") == 1;
-        SetRepeater(_repeaterToggle.isOn);
+        _hostToggle.isOn = PlayerPrefs.GetInt("repeater") == 1;
+        SetRepeater(_hostToggle.isOn);
 
         _cameraDropdown.onValueChanged.AddListener(OnCameraChanged);
         _resolutionDropdown.onValueChanged.AddListener(OnResolutionChanged);
 
-        _repeaterToggle.onValueChanged.AddListener(delegate
+        _hostToggle.onValueChanged.AddListener(delegate
         {
-            SetRepeater(_repeaterToggle.isOn);
-            SetRepeaterPlayerPrefs(_repeaterToggle.isOn);
+            SetRepeater(_hostToggle.isOn);
+            SetRepeaterPlayerPrefs(_hostToggle.isOn);
         });
 
         _localIPAddressText.text = "Local IP Address : " + GetLocalIPAddress();
