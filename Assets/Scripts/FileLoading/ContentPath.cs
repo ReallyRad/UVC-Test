@@ -10,9 +10,14 @@ public static class ContentPath
 #if UNITY_EDITOR
             // In Editor: Assets/../Content → ProjectRoot/Content
             return Path.GetFullPath(Path.Combine(Application.dataPath, "../Content"));
-#else
-            // In Build: AppFolder/Content
+#elif UNITY_STANDALONE_WIN
+            // In Windows Build: AppFolder/Content
             return Path.GetFullPath(Path.Combine(Application.dataPath, "../Content"));
+#elif UNITY_ANDROID
+            Debug.Log("getting path in Android");
+            var path = Path.GetFullPath(Path.Combine(Application.dataPath, "../Content"))
+            Debug.Log(path);
+            return path;
 #endif
         }
     }
