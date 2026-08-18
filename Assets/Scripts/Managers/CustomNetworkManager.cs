@@ -50,6 +50,7 @@ public class CustomNetworkManager : NetworkManager
         // add player at correct spawn position
         GameObject player = Instantiate(playerPrefab);
         NetworkServer.AddPlayerForConnection(conn, player);
+        Debug.Log("connected to client " + networkAddress);
         ConnectionEstablished(player);
     }
 
@@ -72,7 +73,7 @@ public class CustomNetworkManager : NetworkManager
             StartClient();
             yield return new WaitForSeconds(4);
         }
-        Debug.Log("connected to host");
+        Debug.Log("connected to host " + networkAddress);
     }
     
 }

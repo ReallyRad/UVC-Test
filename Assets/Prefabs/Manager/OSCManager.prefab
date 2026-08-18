@@ -52,11 +52,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousOtherState: {fileID: 11400000, guid: d0addde542cc2804c8dc89ae4c145f72, type: 2}
   otherState: {fileID: 11400000, guid: 9d92648ad173541cda9193e84cc5ea94, type: 2}
-  otherStateGameEvent: {fileID: 11400000, guid: fa8ca749ca9ad4876827002f647bcaf6,
-    type: 2}
+  otherStateGameEvent: {fileID: 11400000, guid: fa8ca749ca9ad4876827002f647bcaf6, type: 2}
   _dimGameEvent: {fileID: 11400000, guid: 9bdc42909d8a4734eb9fe01bfd1f558d, type: 2}
-  _curtainOnGameEvent: {fileID: 11400000, guid: 78f4ccaea5624406cb8bcf19436f86c4,
-    type: 2}
+  _curtainOnGameEvent: {fileID: 11400000, guid: 78f4ccaea5624406cb8bcf19436f86c4, type: 2}
   _mappingData:
   - id: 1
     audioFile: lookAtHands.ogg
@@ -112,7 +110,7 @@ MonoBehaviour:
   _localReceiver: {fileID: 0}
   _localHost: 192.168.1.48
   _localPort: 7000
-  _remoteHost: 172.24.0.45
+  _remoteHost: 192.168.1.69
   _remotePort: 8015
   _useBundle: 0
 --- !u!114 &2768426945808083327
@@ -229,8 +227,7 @@ MonoBehaviour:
   _showDebugFields: 0
   _enableGizmoDebugging: 1
   _debugColor: {r: 0, g: 1, b: 1, a: 1}
-  _previouslyRegisteredEvent: {fileID: 11400000, guid: d69547e4872e9364f88ae94fe32b95aa,
-    type: 2}
+  _previouslyRegisteredEvent: {fileID: 11400000, guid: d69547e4872e9364f88ae94fe32b95aa, type: 2}
   _event: {fileID: 11400000, guid: d69547e4872e9364f88ae94fe32b95aa, type: 2}
   _response:
     m_PersistentCalls:

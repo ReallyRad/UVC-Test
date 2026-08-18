@@ -81,9 +81,6 @@ public class OscManager : MonoBehaviour {
 
         _oscReceiver.Bind("/serialStatus", ReceiveSerialStatus);
         
-        //set IP address of other 
-        SetOthersIP(PlayerPrefs.GetString("othersIP"));
-        _connectionEstablished = false;
     }   
     
     private void SetHost(bool host)
@@ -110,7 +107,6 @@ public class OscManager : MonoBehaviour {
 
     private void SetOthersIP(string othersIP)
     {
-        PlayerPrefs.SetString("othersIP", othersIP);
         GetComponent<OSCTransmitter>().RemoteHost = othersIP;
     }
 
