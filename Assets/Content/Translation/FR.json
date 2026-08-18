@@ -1,0 +1,12 @@
+{
+  "idle": "Déplacez le casque de haut en bas jusqu’à ce que vous puissiez voir ce texte clairement.\n\nLorsque vous êtes prêt(e), regardez le bouton ci-dessous pour commencer.",
+  "otherIsGone": "Oups...\nIl semble que votre collègue soit parti(e) !\nMerci pour votre participation !",
+  "systemFailure": "Une erreur s’est produite dans le système. Veuillez revenir plus tard.",
+  "waitForSerial": "Wait for serial",
+  "waitForOther": "Attendez un moment...",
+  "finished": "Nous espérons que vous avez apprécié votre expérience. \n\nMerci!",
+  "welcome": " Bienvenue\n\n Veuillez prendre un instant pour respirer calmement.",
+  "position": "Asseyez-vous confortablement, et posez vos main sur vos genoux",
+  "sit": "Veuillez restez assis(e) pendant toute la durée de l'expérience",
+  "blank": ""    
+}
