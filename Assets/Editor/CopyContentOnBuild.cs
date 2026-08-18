@@ -6,32 +6,34 @@ using UnityEngine;
 
 public class CopyContentOnBuild : IPostprocessBuildWithReport
 {
-    // Lower number = earlier execution
-    public int callbackOrder => 0;
+    public int callbackOrder => 0; // Lower number = earlier execution
 
     public void OnPostprocessBuild(BuildReport report)
     {
-        // Folder inside your project that you want to copy
-        string sourceFolder = Path.Combine(Application.dataPath, "../MyFolderToCopy");
+        string sourceFolder = Path.Combine(Application.dataPath, "../MyFolderToCopy"); // Folder inside your project that you want to copy
 
         if (!Directory.Exists(sourceFolder))
         {
-            UnityEngine.Debug.LogWarning($"Source folder not found: {sourceFolder}");
+            Debug.LogWarning($"Source folder not found: {sourceFolder}");
             return;
         }
 
-        // Build output location
-        string buildPath = report.summary.outputPath;
-
-        // Directory where the executable lives
-        string buildDirectory = Path.GetDirectoryName(buildPath);
-
-        // Destination folder next to the executable
-        string destinationFolder = Path.Combine(buildDirectory, "MyFolderToCopy");
+        string buildPath = report.summary.outputPath; // Build output location
+        
+        if (report.summary.platform == BuildTarget.Android)
+        {
+            Debug.Log($"[Content] Android build detected.");
+            Debug.Log($"[Content] Content source: {sourceFolder}");
+            Debug.Log($"[Content] Android persistent path will be determined at runtime.");
+            return;
+        }
+        
+        string buildDirectory = Path.GetDirectoryName(buildPath); // Directory where the executable lives
+        string destinationFolder = Path.Combine(buildDirectory, "MyFolderToCopy"); // Destination folder next to the executable
 
         CopyDirectory(sourceFolder, destinationFolder);
 
-        UnityEngine.Debug.Log("Folder copied successfully!");
+        Debug.Log("Folder copied successfully!");
     }
 
     private static void CopyDirectory(string sourceDir, string targetDir)
