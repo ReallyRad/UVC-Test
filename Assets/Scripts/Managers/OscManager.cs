@@ -15,16 +15,16 @@ public class ButtonMapping
 public class OscManager : MonoBehaviour {
 
     public delegate void OnReceivedAudioButtonPressed(string key); 
-    public static OnReceivedAudioButtonPressed ReceivedAudioButtonPressed;
+    public static OnReceivedAudioButtonPressed ReceivedAudioButtonPressed = delegate {};
 
     public delegate void OnReceiveRecenterPose();
-    public static OnReceiveRecenterPose ReceiveRecenterPose;
+    public static OnReceiveRecenterPose ReceiveRecenterPose = delegate {};
 
     public delegate void OnReceiveSerialReady();
-    public static OnReceiveSerialReady ReceiveSerialReady;
+    public static OnReceiveSerialReady ReceiveSerialReady = delegate {};
     
     public delegate void OnReceiveSerialFailure();
-    public static OnReceiveSerialFailure ReceiveSerialFailure;
+    public static OnReceiveSerialFailure ReceiveSerialFailure = delegate {};
     
     public UserStateVariable previousOtherState;
     public UserStateVariable otherState;
