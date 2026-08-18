@@ -12,7 +12,7 @@ public class CustomNetworkManager : NetworkManager
 {
     public bool offlineMode; //TODO remove?;
     
-    public delegate void OnConnectionEstablished(GameObject playerGameObject);
+    public delegate void OnConnectionEstablished(string ipAddress);
     public static OnConnectionEstablished ConnectionEstablished = delegate {};
     
     [Header("Discovery")]
@@ -50,8 +50,9 @@ public class CustomNetworkManager : NetworkManager
         // add player at correct spawn position
         GameObject player = Instantiate(playerPrefab);
         NetworkServer.AddPlayerForConnection(conn, player);
-        Debug.Log("connected to client " + networkAddress);
-        ConnectionEstablished(player);
+        var clientAddress = System.Net.IPAddress.Parse(conn.address).MapToIPv4().ToString();
+        Debug.Log("connected to client " +  clientAddress);
+        ConnectionEstablished(clientAddress);
     }
 
     public void EnableNetworkGUI(bool show)
@@ -74,6 +75,8 @@ public class CustomNetworkManager : NetworkManager
             yield return new WaitForSeconds(4);
         }
         Debug.Log("connected to host " + networkAddress);
+        ConnectionEstablished(networkAddress);
+        
     }
     
 }

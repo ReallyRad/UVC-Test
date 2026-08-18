@@ -36,8 +36,6 @@ public class OscManager : MonoBehaviour {
     [SerializeField] private  List<ButtonMapping> _mappingData = new  List<ButtonMapping>();
     
     private bool _host;
-    private bool _connectionEstablished;
-    private bool _serialReady;
     
     private OSCReceiver _oscReceiver;
     private OSCTransmitter _oscTransmitter;
@@ -49,7 +47,7 @@ public class OscManager : MonoBehaviour {
         UserStateManager.SendThisUserStatus += SendThisUserStatus;
         SettingsGUI.SetHost += SetHost;
         StandaloneSettingsUI.SetHost += SetHost;
-        //CustomNetworkManager.ConnectionEstablished += ConnectionEstablished;
+        CustomNetworkManager.ConnectionEstablished += ConnectionEstablished;
     }
 
     private void OnDisable()
@@ -58,7 +56,7 @@ public class OscManager : MonoBehaviour {
         //ArduinoManager.SerialFailure -= SendSerialFailure;
         UserStateManager.SendThisUserStatus -= SendThisUserStatus;
         SettingsGUI.SetHost -= SetHost;
-        //CustomNetworkManager.ConnectionEstablished -= ConnectionEstablished;
+        CustomNetworkManager.ConnectionEstablished -= ConnectionEstablished;
     }
 
     private void Awake()
@@ -192,18 +190,6 @@ public class OscManager : MonoBehaviour {
         }
     }
     
-    private void CheckConnectionAndSendSerialReady()
-    {
-        _serialReady = true;
-        if (_connectionEstablished)
-        {
-            Debug.Log("sending serial status", DLogType.Network);
-            OSCMessage message = new OSCMessage("/serialStatus");
-            message.AddValue(OSCValue.Int(1));
-            _oscTransmitter.Send(message);    
-        }
-    }
-    
     private void SendSerialFailure()
     {
         Debug.Log("sending serial status", DLogType.Network);
@@ -212,10 +198,9 @@ public class OscManager : MonoBehaviour {
         _oscTransmitter.Send(message);
     }
 
-    private void ConnectionEstablished()
+    private void ConnectionEstablished(string othersIP)
     {
-        _connectionEstablished = true;
-        if (_serialReady) CheckConnectionAndSendSerialReady();
+        _oscTransmitter.RemoteHost = othersIP;
     }
 
 }
