@@ -30,7 +30,7 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 
 	public bool OnUVCAttachEvent(UVCManager manager, UVCDevice device)
 	{
-		Console.WriteLine($"{TAG}OnUVCAttachEvent:{device}");
+		Debug.Log($"{TAG}OnUVCAttachEvent:{device}");
 		// XXX The current implementation basically accepts all UVC devices.
 		// However, THETA S, THETA V, and THETA Z1 are omitted because they have interfaces that cannot acquire video.
 		// Similar to IsUVCEnabled, the UVC device filter should be configurable in the inspector.
@@ -42,7 +42,7 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 
 	public void OnUVCDetachEvent(UVCManager manager, UVCDevice device) //UVC device has been removed
 	{
-		Console.WriteLine($"{TAG}OnUVCDetachEvent:{device}");
+		Debug.Log($"{TAG}OnUVCDetachEvent:{device}");
 	}
 
 	public bool IsUVCEnabled(UVCManager manager, UVCDevice device)
@@ -52,14 +52,19 @@ public class CustomUVCDrawer : MonoBehaviour, IUVCDrawer
 
 	public void OnUVCStartEvent(UVCManager manager, UVCDevice device, Texture tex) //Video acquisition has begun
 	{
-		Console.WriteLine($"{TAG}HandleOnStartPreview:({tex})");
+		Debug.Log($"{TAG}HandleOnStartPreview:({tex})");
 		_texture = tex;
+		Debug.Log("assigned incoming texture to uvc drawer _texture");
+		if (_renderTarget == null) Debug.Log("render target is null");
+		if (_renderTarget.material == null) Debug.Log("render target material is null");
+		if (_renderTarget.material.mainTexture == null) Debug.Log("render target material mainTexture is null");
 		_renderTarget.material.mainTexture = tex;
+		Debug.Log("assigned incoming texture to render target main texture");
 	}
 
 	public void OnUVCStopEvent(UVCManager manager, UVCDevice device) //Video acquisition has finished.
 	{
-		Console.WriteLine($"{TAG}OnUVCStopEvent:{device}");
+		Debug.Log($"{TAG}OnUVCStopEvent:{device}");
 	}
 
 	private void ReceivedRenderTarget(Transform player)
