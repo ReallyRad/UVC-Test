@@ -22,7 +22,7 @@ public class CustomNetworkManager : NetworkManager
     {
         if (offlineMode) Instantiate(playerPrefab); //TODO needed?
 
-        if (PlayerPrefs.GetInt("repeater", 0) == 1)
+        if (PlayerPrefs.GetInt("host", 0) == 1)
         {
             Debug.Log("starting host, advertising server");
             StartHost();

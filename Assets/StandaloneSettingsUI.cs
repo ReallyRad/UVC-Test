@@ -8,8 +8,8 @@ using UnityEngine.UI;
 
 public class StandaloneSettingsUI : MonoBehaviour
 {
-    public delegate void OnSetRepeater(bool on);
-    public static OnSetRepeater SetRepeater = delegate {};
+    public delegate void OnSetHost(bool on);
+    public static OnSetHost SetHost = delegate {};
 
 
     [SerializeField] private UVCManager _manager;
@@ -34,24 +34,18 @@ public class StandaloneSettingsUI : MonoBehaviour
     
     private void Awake()
     {
-        _hostToggle.onValueChanged.AddListener(delegate { SetRepeater(_hostToggle.isOn); });
+        _hostToggle.onValueChanged.AddListener(delegate { SetHost(_hostToggle.isOn); });
     }
     
     private void Start()
     {
         //_showConsoleButton.clicked += () => LunarConsole.Show();
-        _hostToggle.isOn = PlayerPrefs.GetInt("repeater") == 1;
-        SetRepeater(_hostToggle.isOn);
+        _hostToggle.isOn = PlayerPrefs.GetInt("host") == 1;
+        SetHost(_hostToggle.isOn);
 
         _cameraDropdown.onValueChanged.AddListener(OnCameraChanged);
         _resolutionDropdown.onValueChanged.AddListener(OnResolutionChanged);
-
-        _hostToggle.onValueChanged.AddListener(delegate
-        {
-            SetRepeater(_hostToggle.isOn);
-            SetRepeaterPlayerPrefs(_hostToggle.isOn);
-        });
-
+        _hostToggle.onValueChanged.AddListener(delegate { SetHost(_hostToggle.isOn); });
         _localIPAddressText.text = "Local IP Address : " + GetLocalIPAddress();
         
         Refresh();
@@ -134,12 +128,6 @@ public class StandaloneSettingsUI : MonoBehaviour
         bool changed = _manager.SetVideoSize(_currentCamera.device, size);
 
         Debug.Log($"SetVideoSize returned {changed}");
-    }
-
-    private void SetRepeaterPlayerPrefs(bool r) //TODO this was in OSCManager. make variable? 
-    {
-        if (r) PlayerPrefs.SetInt("repeater", 1);
-        else PlayerPrefs.SetInt("repeater", 0);
     }
 
     private string GetLocalIPAddress()

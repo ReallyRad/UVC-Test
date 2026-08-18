@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7977408457492620035}
   - component: {fileID: 6910659444714781483}
   - component: {fileID: 3697700652009034670}
-  - component: {fileID: 2496471845659273539}
+  - component: {fileID: 402186970061797920}
   m_Layer: 0
   m_Name: StandaloneSettingsUI
   m_TagString: Untagged
@@ -99,7 +99,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RaycastTriggerInteraction: 1
---- !u!114 &2496471845659273539
+--- !u!114 &402186970061797920
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -708,7 +708,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2496471845659273539}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UVCToolkitPanel, Assembly-CSharp
         m_MethodName: SetExposure
         m_Mode: 0

@@ -15,7 +15,7 @@ public class SwapControlGUI : MonoBehaviour
 
     private Button _audioButtons;
 
-    public void ButtonPressed(string audioFile) //TODO make this repeat on the other side if repeater? or regardless?
+    public void ButtonPressed(string audioFile) //TODO make this repeat on the other side if host? or regardless?
     {
         AudioButtonPressed(audioFile); 
     }

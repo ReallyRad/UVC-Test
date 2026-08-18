@@ -35,7 +35,7 @@ public class OscManager : MonoBehaviour {
     
     [SerializeField] private  List<ButtonMapping> _mappingData = new  List<ButtonMapping>();
     
-    private bool _repeater;
+    private bool _host;
     private bool _connectionEstablished;
     private bool _serialReady;
     
@@ -47,7 +47,8 @@ public class OscManager : MonoBehaviour {
         //ArduinoManager.SerialReady += CheckConnectionAndSendSerialReady;
         //ArduinoManager.SerialFailure += SendSerialFailure;
         UserStateManager.SendThisUserStatus += SendThisUserStatus;
-        SettingsGUI.SetRepeater += SetRepeater;
+        SettingsGUI.SetHost += SetHost;
+        StandaloneSettingsUI.SetHost += SetHost;
         //CustomNetworkManager.ConnectionEstablished += ConnectionEstablished;
     }
 
@@ -56,7 +57,7 @@ public class OscManager : MonoBehaviour {
         //ArduinoManager.SerialReady -= CheckConnectionAndSendSerialReady;
         //ArduinoManager.SerialFailure -= SendSerialFailure;
         UserStateManager.SendThisUserStatus -= SendThisUserStatus;
-        SettingsGUI.SetRepeater -= SetRepeater;
+        SettingsGUI.SetHost -= SetHost;
         //CustomNetworkManager.ConnectionEstablished -= ConnectionEstablished;
     }
 
@@ -85,11 +86,11 @@ public class OscManager : MonoBehaviour {
         _connectionEstablished = false;
     }   
     
-    private void SetRepeater(bool r)
+    private void SetHost(bool host)
     {
-        _repeater = r;
-        if (r) PlayerPrefs.SetInt("repeater", 1);
-        else PlayerPrefs.SetInt("repeater", 0);
+        _host = host;
+        if (host) PlayerPrefs.SetInt("host", 1);
+        else PlayerPrefs.SetInt("host", 0);
     }
     
     public void SendThisUserStatus(UserState status)
@@ -119,7 +120,7 @@ public class OscManager : MonoBehaviour {
         if (message.ToFloat(out value))
             if (value == 1f) ReceiveRecenterPose();
 
-        if (_repeater) _oscTransmitter.Send(message);
+        if (_host) _oscTransmitter.Send(message);
     }
 
     private void ReceiveDimOn(OSCMessage message)
@@ -128,7 +129,7 @@ public class OscManager : MonoBehaviour {
         if (message.ToFloat(out value))
             if (value == 1f) _dimGameEvent.Raise(true);
 
-        if (_repeater) _oscTransmitter.Send(message);
+        if (_host) _oscTransmitter.Send(message);
     } //TODO collapse into one dim
 
     private void ReceiveDimOff(OSCMessage message)
@@ -137,7 +138,7 @@ public class OscManager : MonoBehaviour {
         if (message.ToFloat(out value))
             if (value == 1f) _dimGameEvent.Raise(false);
 
-        if (_repeater) _oscTransmitter.Send(message);
+        if (_host) _oscTransmitter.Send(message);
     } //TODO collapse into one dim
 
     private void ReceiveBtn(OSCMessage message) 
@@ -152,7 +153,7 @@ public class OscManager : MonoBehaviour {
             }
         }
         
-        if (_repeater) _oscTransmitter.Send(message);
+        if (_host) _oscTransmitter.Send(message);
     }
 
     public void SendBtn(int index) 

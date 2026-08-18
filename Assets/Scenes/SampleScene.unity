@@ -1415,7 +1415,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: StandaloneSettingsUI
       objectReference: {fileID: 0}
-    - target: {fileID: 2496471845659273539, guid: bd8e2e5160d444612b45faa200ee5b50, type: 3}
+    - target: {fileID: 402186970061797920, guid: bd8e2e5160d444612b45faa200ee5b50, type: 3}
       propertyPath: _manager
       value: 
       objectReference: {fileID: 1299211557}
@@ -1518,6 +1518,10 @@ PrefabInstance:
     - target: {fileID: 3756587537863720747, guid: bd8e2e5160d444612b45faa200ee5b50, type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777093850924647726, guid: bd8e2e5160d444612b45faa200ee5b50, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4402107615377949369, guid: bd8e2e5160d444612b45faa200ee5b50, type: 3}
       propertyPath: m_AnchorMax.y

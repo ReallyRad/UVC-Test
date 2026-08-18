@@ -17,8 +17,8 @@ public class SettingsGUI : MonoBehaviour
     public delegate void OnRotateCamera();
     public static OnRotateCamera RotateCamera;
     
-    public delegate void OnSetRepeater(bool on);
-    public static OnSetRepeater SetRepeater;
+    public delegate void OnSetHost(bool on);
+    public static OnSetHost SetHost;
     
     public delegate void OnDebugMenuPressed();
     public static OnDebugMenuPressed DebugMenuPressed;
@@ -37,13 +37,13 @@ public class SettingsGUI : MonoBehaviour
     [SerializeField] private Button _debugUIButton;
     [SerializeField] private Slider _exposureSlider;
     [SerializeField] private Text _exposureText;
-    [SerializeField] private Toggle _repeaterToggle;
+    [SerializeField] private Toggle _hostToggle;
 
     private void Awake()
     {
         _dimButton.onClick.AddListener(delegate { ToggleDim(); });
         //_cameraSettingsButton.onClick.AddListener(delegate { VideoCameraManager.instance.ShowCameraConfigWindow(); });
-        _repeaterToggle.onValueChanged.AddListener(delegate { SetRepeater(_repeaterToggle.isOn); });
+        _hostToggle.onValueChanged.AddListener(delegate { SetHost(_hostToggle.isOn); });
         _resetYawButton.onClick.AddListener(delegate { RecenterPose(); });
 
         _exposureSlider.onValueChanged.AddListener(delegate(float value)
@@ -59,8 +59,8 @@ public class SettingsGUI : MonoBehaviour
 
     private void Start()
     {        
-        _repeaterToggle.isOn = PlayerPrefs.GetInt("repeater") == 1;
-        SetRepeater(_repeaterToggle.isOn);
+        _hostToggle.isOn = PlayerPrefs.GetInt("host") == 1;
+        SetHost(_hostToggle.isOn);
         
         if (PlayerPrefs.GetInt("exposure", 1) != 1)
         {
