@@ -10,7 +10,7 @@ public class CopyContentOnBuild : IPostprocessBuildWithReport
 
     public void OnPostprocessBuild(BuildReport report)
     {
-        string sourceFolder = Path.Combine(Application.dataPath, "../MyFolderToCopy"); // Folder inside your project that you want to copy
+        string sourceFolder = Path.Combine(Application.dataPath, "Content"); // Folder inside your project that you want to copy
 
         if (!Directory.Exists(sourceFolder))
         {
