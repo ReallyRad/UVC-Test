@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
+using System.Diagnostics;
 using System.IO;
 using UnityEngine;
 
@@ -10,11 +11,16 @@ public class CopyContentOnBuild : IPostprocessBuildWithReport
 
     public void OnPostprocessBuild(BuildReport report)
     {
-        string sourceFolder = Path.Combine(Application.dataPath, "Content"); // Folder inside your project that you want to copy
+        string sourceFolder = Path.GetFullPath(Path.Combine(Application.dataPath, "../Content"));
+        
+        UnityEngine.Debug.Log($"[Content] Application.dataPath: {Application.dataPath}");
+        UnityEngine.Debug.Log($"[Content] Source folder: {sourceFolder}");
+        UnityEngine.Debug.Log($"[Content] Source files: {Directory.GetFiles(sourceFolder).Length}");
+        UnityEngine.Debug.Log($"[Content] Source directories: {Directory.GetDirectories(sourceFolder).Length}");
 
         if (!Directory.Exists(sourceFolder))
         {
-            Debug.LogWarning($"Source folder not found: {sourceFolder}");
+            UnityEngine.Debug.LogWarning($"Source folder not found: {sourceFolder}");
             return;
         }
 
@@ -22,9 +28,7 @@ public class CopyContentOnBuild : IPostprocessBuildWithReport
         
         if (report.summary.platform == BuildTarget.Android)
         {
-            Debug.Log($"[Content] Android build detected.");
-            Debug.Log($"[Content] Content source: {sourceFolder}");
-            Debug.Log($"[Content] Android persistent path will be determined at runtime.");
+            PushContentToQuest(sourceFolder);
             return;
         }
         
@@ -33,9 +37,35 @@ public class CopyContentOnBuild : IPostprocessBuildWithReport
 
         CopyDirectory(sourceFolder, destinationFolder);
 
-        Debug.Log("Folder copied successfully!");
+        UnityEngine.Debug.Log("Folder copied successfully!");
     }
 
+    private static void PushContentToQuest(string sourceFolder)
+    {
+        string destination = "/data/local/tmp/Content";
+
+        UnityEngine.Debug.Log($"[Content] Pushing: {sourceFolder}");
+        UnityEngine.Debug.Log($"[Content] To: {destination}");
+
+        RunAdb($"shell rm -rf \"{destination}\"");
+        RunAdb($"shell mkdir -p \"{destination}\"");
+
+        // Push each top-level item individually.
+        // Avoids the adb push . behaviour that caused the huge memory spike.
+        foreach (string file in Directory.GetFiles(sourceFolder))
+        {
+            RunAdb($"push \"{file}\" \"{destination}/\"");
+        }
+
+        foreach (string directory in Directory.GetDirectories(sourceFolder))
+        {
+            string directoryName = Path.GetFileName(directory);
+            RunAdb($"push \"{directory}\" \"{destination}/{directoryName}\"");
+        }
+
+        UnityEngine.Debug.Log("[Content] Content pushed to Quest staging directory.");
+    }
+    
     private static void CopyDirectory(string sourceDir, string targetDir)
     {
         Directory.CreateDirectory(targetDir);
@@ -50,6 +80,36 @@ public class CopyContentOnBuild : IPostprocessBuildWithReport
         {
             string targetSubDir = Path.Combine(targetDir, Path.GetFileName(directory));
             CopyDirectory(directory, targetSubDir);
+        }
+    }
+    
+    private static void RunAdb(string arguments)
+    {
+        using var process = new Process();
+
+        process.StartInfo = new ProcessStartInfo
+        {
+            FileName = "/opt/homebrew/bin/adb", //TODO this will only work when building on Mac OS
+            Arguments = arguments,
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            CreateNoWindow = true
+        };
+        UnityEngine.Debug.Log($"[ADB] Running: /opt/homebrew/bin/adb {arguments}");
+        process.Start();
+        
+        string output = process.StandardOutput.ReadToEnd();
+        string error = process.StandardError.ReadToEnd();
+
+        process.WaitForExit();
+
+        if (!string.IsNullOrWhiteSpace(output)) UnityEngine.Debug.Log($"[ADB] {output}");
+        if (!string.IsNullOrWhiteSpace(error)) UnityEngine.Debug.Log($"[ADB] {error}");
+
+        if (process.ExitCode != 0)
+        {
+            throw new System.Exception($"ADB failed with exit code {process.ExitCode}");
         }
     }
 }
