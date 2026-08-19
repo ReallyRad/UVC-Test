@@ -12,7 +12,7 @@ using UnityEngine.Networking;
 public class DataLoader : MonoBehaviour
 {
     public delegate void OnLoadLanguageButtonTexture(string language);
-    public static OnLoadLanguageButtonTexture LoadLanguage; //TODO this is redundant with the language change game event
+    public static OnLoadLanguageButtonTexture LoadLanguage = delegate {}; //TODO this is redundant with the language change game event
     
     [Header("Target ScriptableObject")]
     [SerializeField] private SequenceData sequenceData;

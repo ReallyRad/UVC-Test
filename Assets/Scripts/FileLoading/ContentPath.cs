@@ -3,28 +3,19 @@ using UnityEngine;
 
 public static class ContentPath
 {
-    public static string Root
+    private static string Root
     {
         get
         {
 #if UNITY_EDITOR
-            // In Editor: Assets/../Content → ProjectRoot/Content
-            return Path.GetFullPath(Path.Combine(Application.dataPath, "../Content"));
+            return Path.GetFullPath(Path.Combine(Application.dataPath, "../Content")); // In Editor: Assets/../Content → ProjectRoot/Content
 #elif UNITY_STANDALONE_WIN
-            // In Windows Build: AppFolder/Content
-            return Path.GetFullPath(Path.Combine(Application.dataPath, "../Content"));
+            return Path.GetFullPath(Path.Combine(Application.dataPath, "../Content")); // In Windows Build: AppFolder/Content
 #elif UNITY_ANDROID
-            Debug.Log("getting path in Android");
             var path = Path.GetFullPath(Path.Combine(Application.persistentDataPath, "Content"));
-            Debug.Log(path);
             return path;
 #endif
         }
-    }
-
-    public static string RootFolder(string filename)
-    {
-        return Path.Combine(Root, filename);
     }
     
     public static string Audio(string languageCode, string filename)

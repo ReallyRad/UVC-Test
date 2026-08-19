@@ -60,7 +60,6 @@ namespace Serenegiant
 
 		void Awake()
 		{
-			Debug.Log("beetch");
 #if (!NDEBUG && DEBUG && ENABLE_LOG)
 			Console.WriteLine($"{TAG}Awake:");
 #endif
