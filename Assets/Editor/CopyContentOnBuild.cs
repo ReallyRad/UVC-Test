@@ -54,6 +54,7 @@ public class CopyContentOnBuild : IPostprocessBuildWithReport
         // Avoids the adb push . behaviour that caused the huge memory spike.
         foreach (string file in Directory.GetFiles(sourceFolder))
         {
+            if (Path.GetFileName(file) == ".DS_Store") continue; //don't copy .DS_Store on Mac
             RunAdb($"push \"{file}\" \"{destination}/\"");
         }
 
