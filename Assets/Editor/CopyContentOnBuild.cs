@@ -63,7 +63,13 @@ public class CopyContentOnBuild : IPostprocessBuildWithReport
             RunAdb($"push \"{directory}\" \"{destination}/{directoryName}\"");
         }
 
-        UnityEngine.Debug.Log("[Content] Content pushed to Quest staging directory.");
+        string persistentContent = "/storage/emulated/0/Android/data/com.UnityTechnologies.com.unity.template.urpblank/files/Content";
+
+        RunAdb($"shell rm -rf \"{persistentContent}\"");
+        RunAdb($"shell mkdir -p \"{persistentContent}\"");
+        RunAdb($"shell cp -r \"{destination}/.\" \"{persistentContent}/\"");
+
+        UnityEngine.Debug.Log("[Content] Content copied to persistent storage.");
     }
     
     private static void CopyDirectory(string sourceDir, string targetDir)
