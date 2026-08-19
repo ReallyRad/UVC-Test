@@ -627,8 +627,6 @@ namespace Serenegiant.UVC
 		IEnumerator Start()
 		{			
 #if (!NDEBUG && DEBUG && ENABLE_LOG)
-			Debug.Log("beetch debug	");
-			
 			Console.WriteLine($"{TAG}Start:");
 #endif
 			mainContext = SynchronizationContext.Current;
