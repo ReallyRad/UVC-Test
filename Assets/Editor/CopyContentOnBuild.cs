@@ -77,16 +77,10 @@ public class CopyContentOnBuild : IPostprocessBuildWithReport
         Directory.CreateDirectory(targetDir);
 
         foreach (string file in Directory.GetFiles(sourceDir))
-        {
-            string targetFilePath = Path.Combine(targetDir, Path.GetFileName(file));
-            File.Copy(file, targetFilePath, true);
-        }
+            File.Copy(file, Path.Combine(targetDir, Path.GetFileName(file)), true);
 
-        foreach (string directory in Directory.GetDirectories(sourceDir))
-        {
-            string targetSubDir = Path.Combine(targetDir, Path.GetFileName(directory));
-            CopyDirectory(directory, targetSubDir);
-        }
+        foreach (string directory in Directory.GetDirectories(sourceDir)) 
+            CopyDirectory(directory, Path.Combine(targetDir, Path.GetFileName(directory)));
     }
     
     private static void RunAdb(string arguments)
@@ -102,6 +96,7 @@ public class CopyContentOnBuild : IPostprocessBuildWithReport
             RedirectStandardError = true,
             CreateNoWindow = true
         };
+        
         UnityEngine.Debug.Log($"[ADB] Running: /opt/homebrew/bin/adb {arguments}");
         process.Start();
         
@@ -113,9 +108,6 @@ public class CopyContentOnBuild : IPostprocessBuildWithReport
         if (!string.IsNullOrWhiteSpace(output)) UnityEngine.Debug.Log($"[ADB] {output}");
         if (!string.IsNullOrWhiteSpace(error)) UnityEngine.Debug.Log($"[ADB] {error}");
 
-        if (process.ExitCode != 0)
-        {
-            throw new System.Exception($"ADB failed with exit code {process.ExitCode}");
-        }
+        if (process.ExitCode != 0) throw new System.Exception($"ADB failed with exit code {process.ExitCode}");
     }
 }
