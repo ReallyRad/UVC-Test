@@ -15,7 +15,7 @@ public static class ContentPath
             return Path.GetFullPath(Path.Combine(Application.dataPath, "../Content"));
 #elif UNITY_ANDROID
             Debug.Log("getting path in Android");
-            var path = Path.GetFullPath(Path.Combine(Application.dataPath, "../Content"))
+            var path = Path.GetFullPath(Path.Combine(Application.persistentDataPath, "Content"));
             Debug.Log(path);
             return path;
 #endif
