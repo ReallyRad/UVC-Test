@@ -38,12 +38,14 @@ public class UserStateManager : MonoBehaviour //TODO make options for Vive/Rift 
     {
         selfState.Value = UserState.headsetOff;
         otherState.Value = UserState.headsetOff;
+        Debug.Log("User state manager start");
     }
 
     private void Update() //Monitor VR headset state changes to infer user presence
     {
         //TODO this will not work with all headsets. this is for Quest3 only
-        if (!OVRPlugin.userPresent && selfState.Value != UserState.headsetOff)        {
+        if (!OVRPlugin.userPresent && selfState.Value != UserState.headsetOff)       
+        {
             previousSelfState.Value = selfState.Value;
             selfState.Value = UserState.headsetOff; 
             selfStateGameEvent.Raise(UserState.headsetOff);
