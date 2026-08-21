@@ -42,14 +42,16 @@ public class CustomNetworkManager : NetworkManager
         _networkDiscovery.StopDiscovery();
         //StartClient(response.uri);
         StartCoroutine(TryConnect());
-    }
+    } 
     
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
         Debug.Log("OnServerAddPlayer, spawning player and adding player for connection");
         // add player at correct spawn position
         GameObject player = Instantiate(playerPrefab);
+        Debug.Log("Adding player for connection");
         NetworkServer.AddPlayerForConnection(conn, player);
+        Debug.Log($"received address: '{conn.address}'");
         var clientAddress = System.Net.IPAddress.Parse(conn.address).MapToIPv4().ToString();
         Debug.Log("connected to client " +  clientAddress);
         ConnectionEstablished(clientAddress);
