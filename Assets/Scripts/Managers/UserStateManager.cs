@@ -40,24 +40,22 @@ public class UserStateManager : MonoBehaviour //TODO make options for Vive/Rift 
         otherState.Value = UserState.headsetOff;
     }
 
-    private void Update() //Monitor VR headset state changes to infer user presence
+    private void OnApplicationFocus(bool hasFocus)
     {
-        //TODO this will not work with all headsets. this is for Rift CV1 only
-        if (SessionStateFeature.GetCurrentState() == (int) XrSessionState.Idle  && selfState.Value != UserState.headsetOff)
+        if (hasFocus)
         {
             previousSelfState.Value = selfState.Value;
             selfState.Value = UserState.headsetOff; 
-            selfStateGameEvent.Raise(UserState.headsetOff);
+            selfStateGameEvent.Raise(UserState.headsetOff); 
         }
-       
-        else if (SessionStateFeature.GetCurrentState() == (int) XrSessionState.Focused && selfState.Value == UserState.headsetOff) //if we just put the headset on
+        else
         {
             previousSelfState.Value = selfState.Value;
             selfState.Value = UserState.headsetOn;
             selfStateGameEvent.Raise(UserState.headsetOn);
         }
     }
-    
+
     public void SelfStateChanged(UserState newState) //this can be triggered by headset of confirmation button
     {
         if (newState == UserState.headsetOff)
